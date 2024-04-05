@@ -21,8 +21,8 @@ class MinioStorageService < StorageService
                 body: file
         }
 
-        signer = Signer.new(@@creds)
-        headers = signer.sign_request(request)
+        signer = SigV4Helper.new(@@creds)
+        headers = SigV4Helper.sign_request(request)
         response = HTTParty.put(request[:url], body: request[:body], headers: headers)
 
         case response.code
@@ -47,8 +47,8 @@ class MinioStorageService < StorageService
                 body: ''
             }
 
-            signer = Signer.new(@@creds)
-            headers = signer.sign_request(request)
+            signer = SigV4Helper.new(@@creds)
+            headers = SigV4Helper.sign_request(request)
             response = HTTParty.get(request[:url], body: request[:body], headers: headers)
 
             case response.code
